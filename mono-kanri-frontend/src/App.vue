@@ -5,7 +5,7 @@ import axios from 'axios'; // ★ Axiosをインポート
 // アイテムのリストを保持するためのリアクティブな変数
 const items = ref([]); 
 // APIのベースURL
-const apiBaseUrl = 'http://localhost:8080/api/items'; 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 // ★★★ フォーム用の状態変数 ★★★
 const newItem = ref({
