@@ -1,0 +1,20 @@
+# IDE/OS files
+.DS_Store
+.idea/
+.vscode/
+
+# Node.js
+/mono-kanri-frontend/node_modules
+/mono-kanri-frontend/dist
+/mono-kanri-frontend/npm-debug.log
+
+# Java/Spring Boot
+/mono-kanri-app/target/
+/mono-kanri-app/bin/
+*.jar
+*.war
+/mono-kanri-app/pom.xml.tag
+/mono-kanri-app/pom.xml.releaseBackup
+/mono-kanri-app/pom.xml.versionsBackup
+/mono-kanri-app/pom.xml.next
+/mono-kanri-app/release.properties

@@ -1,0 +1,7 @@
+CREATE TABLE items (
+    item_id SERIAL PRIMARY KEY,
+    item_nm VARCHAR(255) NOT NULL,
+    stor_loc VARCHAR(255), -- NULLを許可
+    reg_dtm TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    upd_dtm TIMESTAMP WITHOUT TIME ZONE -- NULLを許可
+);

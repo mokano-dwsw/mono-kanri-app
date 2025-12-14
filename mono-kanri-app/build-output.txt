@@ -1,0 +1,47 @@
+--- Build Log (excerpt) - 2025-11-22 21:49:24 JST ---
+
+Command sequence executed:
+- java --version
+- .\mvnw -v
+- Remove target (if existed)
+- .\mvnw -U clean test
+
+Java:
+openjdk 21.0.4 2024-07-16 LTS
+OpenJDK Runtime Environment Temurin-21.0.4+7 (build 21.0.4+7-LTS)
+OpenJDK 64-Bit Server VM Temurin-21.0.4+7 (build 21.0.4+7-LTS, mixed mode, sharing)
+
+Maven (wrapper):
+Apache Maven 3.9.11
+Maven home: C:\Users\mokan\.m2\wrapper\dists\apache-maven-3.9.11\...
+Java version: 21.0.4, vendor: Eclipse Adoptium
+
+Build summary (important parts):
+[INFO] Building mono-kanri-app 0.0.1-SNAPSHOT
+[INFO] --- compiler:3.11.0:compile (default-compile) @ mono-kanri-app ---
+[INFO] Compiling 1 source file with javac [debug release 21] to target\classes
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ mono-kanri-app ---
+[INFO] Compiling 1 source file with javac [debug release 21] to target\test-classes
+
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.dwsw_app.mono_kanri_app.MonoKanriAppApplicationTests
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  11.742 s
+[INFO] Finished at: 2025-11-22T21:49:24+09:00
+[INFO] ------------------------------------------------------------------------
+
+Warnings observed (non-fatal):
+- Mockito inline-mock-maker dynamically self-attaching; future JDKs may disallow this. Consider adding Mockito as a Java agent as described in Mockito docs.
+- Byte-buddy agent loaded dynamically; JDK runtime issued warnings about dynamic agent loading.
+
+Notes / next steps:
+- If you want, I can search for the canonical `uroborosql` coordinates and update `pom.xml` to a maintained artifact/version.
+- If you prefer, I can commit these changes (pom.xml and this log) into git and create a short release branch.
+
+--- End of excerpt ---

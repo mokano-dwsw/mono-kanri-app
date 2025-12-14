@@ -1,0 +1,16 @@
+### 1. アイテム登録 (POST)
+# 日本語の文字化け確認用リクエスト
+POST http://localhost:8080/api/items
+Content-Type: application/json
+
+{
+    "itemNm": "新しい鉛筆",
+    "quantity": 10,
+    "storLoc": "倉庫A"
+}
+
+### 2. 全件取得 (GET)
+GET http://localhost:8080/api/items
+
+### 3. アイテム削除 (DELETE)
+DELETE http://localhost:8080/api/items/7
