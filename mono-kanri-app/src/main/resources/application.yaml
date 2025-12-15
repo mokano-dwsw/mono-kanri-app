@@ -1,4 +1,6 @@
 spring:
+  # Renderが提供する環境変数 PORT を使用するように設定
+  port: ${PORT:8080}
   application:
     name: mono-kanri-app
   # --- PostgreSQL データベース接続設定 ---
