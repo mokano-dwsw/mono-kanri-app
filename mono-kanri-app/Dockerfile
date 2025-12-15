@@ -33,8 +33,5 @@ WORKDIR /app
 # ビルドステージで生成したjarファイルをコピー
 COPY --from=builder /app/target/mono-kanri-app-0.0.1-SNAPSHOT.jar ./app.jar
 
-# 実行ファイルとして公開
-EXPOSE 10000
-
 # アプリケーションの起動コマンド
 ENTRYPOINT ["java", "-jar", "app.jar"]
