@@ -1,30 +1,30 @@
-spring:
-  # Renderが提供する環境変数 PORT を使用するように設定
+# サーバー設定 (spring: と同階層にする必要があります)
+server:
   port: ${PORT:8080}
+
+spring:
   application:
     name: mono-kanri-app
   # --- PostgreSQL データベース接続設定 ---
   datasource:
-    # 既存のURLに「&stringtype=unspecified」を追加します。
-    # すでに ?charSet=UTF-8 が含まれていることを前提とします。
-    url: jdbc:postgresql://localhost:5432/mono_db?charSet=UTF-8&stringtype=unspecified
-    username: mono_db_user
-    password: mono_db_pass
+    # 環境変数があればそれを使用、なければ localhost を使用
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/mono_db}?charSet=UTF-8&stringtype=unspecified
+    username: ${SPRING_DATASOURCE_USERNAME:mono_db_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:mono_db_pass}
     driver-class-name: org.postgresql.Driver
-    # 接続プールの設定 (Hikaricpがデフォルトで利用されます)
+# 接続プールの設定
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
       connection-init-sql: SET client_encoding TO 'UTF8'
   
-  # Spring BootのJPA機能を無効化 (uroborosqlを使うため)
+  # JPA機能を無効化
   jpa:
-    # JPA関連の自動設定を無効化
-    # これがないと、JPAとuroborosqlが競合する可能性があります
     enabled: false
 
 # --- uroborosql 設定 ---
-# SQLファイルを配置するディレクトリを指定します
-# src/main/resources/sql/ にSQLファイルを置くことを想定
 uroborosql:
   sql-path: sql/
+  dialect: POSTGRESQL
+  # ログレベル設定 (TRACE, DEBUG, INFO, WARN, ERROR, FATAL)
+  log-level: DEBUG
