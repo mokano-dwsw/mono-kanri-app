@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController // REST APIのコントローラーであることを示す
 @RequestMapping("/api/items") // このコントローラーのベースURLを設定
-@CrossOrigin(origins = "http://localhost:5173") // ★ 追加：フロントエンドのURLを指定
+@CrossOrigin(origins = "*") // ★ 追加：フロントエンドのURLを指定
 public class ItemController {
 
     // ItemServiceをDIする
