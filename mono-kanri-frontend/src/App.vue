@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import apiClient from './api.js'; // jsのapiClientをインポート
+import apiClient from './services/api.js'; // jsのapiClientをインポート
 
 // アイテムのリストを保持するためのリアクティブな変数
 const items = ref([]); 
