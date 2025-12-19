@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios'; // ★ Axiosをインポート
+import apiClient from './api.js'; // jsのapiClientをインポート
 
 // アイテムのリストを保持するためのリアクティブな変数
 const items = ref([]); 
@@ -10,7 +10,7 @@ const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 // ★★★ フォーム用の状態変数 ★★★
 const newItem = ref({
   itemNm: '', // モノの名前
-  quantity: 1, // 将来のために残しますが、今回は固定値でもOKです
+  itemQty: 1, // 将来のために残しますが、今回は固定値でもOKです
   storLoc: '' // 保管場所
 });
 
@@ -29,7 +29,7 @@ const fetchItems = async () => {
             ? `${apiBaseUrl}?keyword=${searchKeyword.value}`
             : apiBaseUrl;
         // GETリクエストを実行
-        const response = await axios.get(url); 
+        const response = await apiClient.get(url); 
         // 取得したデータをitems変数に格納
         items.value = response.data; 
         console.log("アイテム一覧を取得しました:", items.value);
@@ -50,7 +50,7 @@ const addItem = async () => {
     try {
         // POSTリクエストを実行
         // Spring Bootのコントローラが期待するJSON形式で送信
-        await axios.post(apiBaseUrl, newItem.value);
+        await apiClient.post(apiBaseUrl, newItem.value);
         
         alert(`「${newItem.value.itemNm}」を登録しました。`);
         
@@ -76,7 +76,7 @@ const deleteItem = async (itemId, itemNm) => {
 
     try {
         // DELETEリクエストを実行 (URLにitemIdを含める)
-        await axios.delete(`${apiBaseUrl}/${itemId}`);
+        await apiClient.delete(`${apiBaseUrl}/${itemId}`);
         
         alert(`アイテムID: ${itemId} (${itemNm}) を削除しました。`);
         
@@ -98,7 +98,7 @@ const editingItemId = ref(null);
 const editedItem = ref({
     itemId: null,
     itemNm: '',
-    quantity: 0,
+    itemQty: 0,
     storLoc: ''
 });
 
@@ -112,7 +112,7 @@ const startEdit = (item) => {
 // 編集をキャンセルする
 const cancelEdit = () => {
     editingItemId.value = null;
-    editedItem.value = { itemId: null, itemNm: '', quantity: 0, storLoc: '' };
+    editedItem.value = { itemId: null, itemNm: '', itemQty: 0, storLoc: '' };
 };
 
 // 更新を実行する (PUT APIの呼び出し)
@@ -125,7 +125,7 @@ const saveEdit = async () => {
 
     try {
         // PUTリクエストを実行。URLにはID、Bodyには更新後のデータを送信
-        await axios.put(`${apiBaseUrl}/${id}`, editedItem.value);
+        await apiClient.put(`${apiBaseUrl}/${id}`, editedItem.value);
         
         // 編集モードを終了し、一覧を再取得して表示を更新
         cancelEdit();
