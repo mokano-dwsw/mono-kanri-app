@@ -165,7 +165,7 @@ onMounted(fetchItems);
         <input type="text" id="itemNm" v-model="newItem.itemNm" required>
         
         <label for="itemQty">数量:</label>
-        <input type="text" id="itemQty" v-model="newItem.itemQty" required>
+        <input type="text" id="itemQty" class="qty-input" v-model="newItem.itemQty" required>
         
         <label for="storLoc">保管場所:</label>
         <input type="text" id="storLoc" v-model="newItem.storLoc" required>
@@ -182,6 +182,7 @@ onMounted(fetchItems);
           <template v-if="editingItemId === item.itemId">
             <div class="edit-mode">
               モノ名: <input type="text" v-model="editedItem.itemNm">
+              数量: <input type="text" class="qty-input" v-model="editedItem.itemQty">
               場所: <input type="text" v-model="editedItem.storLoc">
               <button @click="saveEdit()">保存</button>
               <button @click="cancelEdit()">キャンセル</button>
@@ -207,4 +208,10 @@ onMounted(fetchItems);
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+  .qty-input {
+    width: 60px;
+    margin-right: 10px;
+    text-align: right; 
+  }
+</style>
