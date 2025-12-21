@@ -28,7 +28,7 @@ const fetchItems = async () => {
   try {
     // 検索キーワードの有無でパスを決定するロジック
     const path = searchKeyword.value 
-      ? `/items/search?keyword=${encodeURIComponent(searchKeyword.value)}` 
+      ? `/items?keyword=${encodeURIComponent(searchKeyword.value)}` 
       : '/items';
     // 組み立てた path を使ってGETリクエスト実行
     const response = await apiClient.get(path); 

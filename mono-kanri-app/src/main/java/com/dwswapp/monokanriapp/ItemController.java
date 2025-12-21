@@ -21,10 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController // REST APIのコントローラーであることを示す
 @RequestMapping("/api/items") // このコントローラーのベースURLを設定
-@CrossOrigin(origins = {
-    "https://creative-pothos-04ee3c.netlify.app", // 本番URL
-    "http://localhost:5173"               // 開発環境（Vite）のデフォルトURL
-})
 public class ItemController {
 
     // ItemServiceをDIする
