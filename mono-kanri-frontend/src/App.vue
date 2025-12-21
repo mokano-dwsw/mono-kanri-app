@@ -26,12 +26,13 @@ const fetchItems = async () => {
   loading.value = true;
   error.value = null;
   try {
-    // 検索キーワードの有無でパスを決定するロジック
-    const path = searchKeyword.value 
-      ? `/items?keyword=${encodeURIComponent(searchKeyword.value)}` 
-      : '/items';
-    // 組み立てた path を使ってGETリクエスト実行
-    const response = await apiClient.get(path); 
+    // パスは常に '/items' 固定でOK！
+    // 第二引数に params を渡すと、axiosが勝手に ?keyword=... を付けてくれます
+    const response = await apiClient.get('/items', {
+      params: {
+        keyword: searchKeyword.value || undefined // キーワードが空ならパラメータを送らない
+      }
+    });
     // 取得したデータをitems変数に格納
     items.value = response.data; 
     console.log("アイテム一覧を取得しました:", items.value);
@@ -56,10 +57,9 @@ const addItem = async () => {
         // Spring Bootのコントローラが期待するJSON形式で送信
         await apiClient.post('/items', newItem.value);
         
-        alert(`「${newItem.value.itemNm}」を登録しました。`);
-        
         // フォームをクリア
         newItem.value.itemNm = '';
+        newItem.value.itemQty = 1;
         newItem.value.storLoc = '';
         
         // 登録後、一覧を再取得して表示を更新
@@ -81,8 +81,6 @@ const deleteItem = async (itemId, itemNm) => {
     try {
         // DELETEリクエストを実行 (URLにitemIdを含める)
         await apiClient.delete(`/items/${itemId}`);
-        
-        alert(`アイテムID: ${itemId} (${itemNm}) を削除しました。`);
         
         // 削除後、一覧を再取得して表示を更新
         await fetchItems(); 
@@ -134,8 +132,6 @@ const saveEdit = async () => {
         // 編集モードを終了し、一覧を再取得して表示を更新
         cancelEdit();
         await fetchItems(); 
-        alert(`アイテムID: ${itemId} の更新が完了しました。`);
-
     } catch (error) {
         console.error(`アイテムID: ${itemId} の更新に失敗しました:`, error);
         alert('アイテムの更新に失敗しました。');
