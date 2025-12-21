@@ -4,8 +4,9 @@ import apiClient from './services/api.js'; // jsのapiClientをインポート
 
 // アイテムのリストを保持するためのリアクティブな変数
 const items = ref([]); 
-// APIのベースURL
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+const searchKeyword = ref('');
+const loading = ref(false);
+const error = ref(null);
 
 // ★★★ フォーム用の状態変数 ★★★
 const newItem = ref({
@@ -15,28 +16,31 @@ const newItem = ref({
 });
 
 // ★★★ 検索用の状態変数 ★★★
-const searchKeyword = ref(''); 
 // 検索ボタンを押すための処理（テンプレートから呼び出される）
 const applySearch = () => {
-    fetchItems();
+  fetchItems();
 };
 
 // ★★★ データ取得ロジック ★★★
 const fetchItems = async () => {
-    try {
-        // ★ キーワードが入力されていれば、クエリパラメータとして追加
-        const url = searchKeyword.value 
-            ? `${apiBaseUrl}?keyword=${searchKeyword.value}`
-            : apiBaseUrl;
-        // GETリクエストを実行
-        const response = await apiClient.get(url); 
-        // 取得したデータをitems変数に格納
-        items.value = response.data; 
-        console.log("アイテム一覧を取得しました:", items.value);
-    } catch (error) {
-        console.error("アイテム一覧の取得に失敗しました:", error);
-        alert('データ取得エラーが発生しました。バックエンドが起動しているか確認してください。');
-    }
+  loading.value = true;
+  error.value = null;
+  try {
+    // 検索キーワードの有無でパスを決定するロジック
+    const path = searchKeyword.value 
+      ? `/items/search?keyword=${encodeURIComponent(searchKeyword.value)}` 
+      : '/items';
+    // 組み立てた path を使ってGETリクエスト実行
+    const response = await apiClient.get(path); 
+    // 取得したデータをitems変数に格納
+    items.value = response.data; 
+    console.log("アイテム一覧を取得しました:", items.value);
+  } catch (err) {
+    console.error("アイテム一覧の取得に失敗しました:", err);
+    error.value = 'データ取得エラーが発生しました。バックエンドが起動しているか確認してください。';
+  } finally {
+    loading.value = false;
+  }
 };
 
 // ★★★ 新規登録ロジック ★★★
@@ -50,7 +54,7 @@ const addItem = async () => {
     try {
         // POSTリクエストを実行
         // Spring Bootのコントローラが期待するJSON形式で送信
-        await apiClient.post(apiBaseUrl, newItem.value);
+        await apiClient.post('/items', newItem.value);
         
         alert(`「${newItem.value.itemNm}」を登録しました。`);
         
@@ -76,7 +80,7 @@ const deleteItem = async (itemId, itemNm) => {
 
     try {
         // DELETEリクエストを実行 (URLにitemIdを含める)
-        await apiClient.delete(`${apiBaseUrl}/${itemId}`);
+        await apiClient.delete(`/items/${itemId}`);
         
         alert(`アイテムID: ${itemId} (${itemNm}) を削除しました。`);
         
@@ -121,19 +125,19 @@ const saveEdit = async () => {
         alert("モノの名前と場所を入力してください。");
         return;
     }
-    const id = editedItem.value.itemId;
+    const itemId = editedItem.value.itemId;
 
     try {
         // PUTリクエストを実行。URLにはID、Bodyには更新後のデータを送信
-        await apiClient.put(`${apiBaseUrl}/${id}`, editedItem.value);
+        await apiClient.put(`/items/${itemId}`, editedItem.value);
         
         // 編集モードを終了し、一覧を再取得して表示を更新
         cancelEdit();
         await fetchItems(); 
-        alert(`アイテムID: ${id} の更新が完了しました。`);
+        alert(`アイテムID: ${itemId} の更新が完了しました。`);
 
     } catch (error) {
-        console.error(`アイテムID: ${id} の更新に失敗しました:`, error);
+        console.error(`アイテムID: ${itemId} の更新に失敗しました:`, error);
         alert('アイテムの更新に失敗しました。');
     }
 };
